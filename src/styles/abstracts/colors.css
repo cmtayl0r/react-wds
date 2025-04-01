@@ -1,0 +1,11 @@
+:root {
+  /* Colors */
+  --color-black: oklch(26.03% 0 0);
+  --color-white: oklch(100% 0 0 / 87%);
+  --color-gray-light: oklch(75.72% 0 0);
+  --color-gray: oklch(62.68% 0 0);
+  --color-gray-dark: oklch(34.85% 0 0);
+
+  /* Semantic colors */
+  --focus-ring: yellow;
+}
