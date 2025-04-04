@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <h1>React WDS</h1>
-      <ChangeArray />
+      {/* <ChangeArray /> */}
       {/* <FetchData /> */}
       {/* <TodoList /> */}
       {/* <List /> */}
