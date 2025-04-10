@@ -183,7 +183,7 @@ TOGGLES
   inset: 0;
   background-color: white;
   border-radius: 24px;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease-in-out;
   z-index: 1;
 }
 
@@ -197,7 +197,7 @@ TOGGLES
   bottom: var(--switch-padding);
   background-color: var(--color-black);
   border-radius: 50%;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease-in-out;
 }
 
 /* Toggle ON state */
