@@ -3,14 +3,8 @@ import styles from "./SimpleForm.module.css";
 import InlineErrorMessage from "./InlineErrorMessage";
 import ErrorSummary from "./ErrorSummary";
 import { fieldIsEmpty } from "../../../utils/validation";
+import FormField from "./FormField";
 
-// ! Radio, check, switch are not link focusable from error summary (fieldRefs ok?)
-// ! password :valid / :invalid with pattern not working correctly
-// TODO: Error/Valid borders on checkboxes, radios and switches
-// TODO: Create components for field and groups
-// TODO: apply form__field--error to all fields
-// TODO; Quickly review Wild OAsis course form validation
-// ? [Do last] Take a look at onBLur again
 // * onChange={(e) => setFormData({ ...formData, name: e.target.value })} , instead of handleChange on inputs
 // * fieldIsEmpty is a helper function to check if a field is empty
 
@@ -202,13 +196,13 @@ function SimpleForm() {
       {/* Fieldset */}
       <fieldset className={styles["stack"]}>
         <legend>Personal Details</legend>
-        <div className={styles["form__field"]}>
-          <label htmlFor="name" className={styles["form__label"]}>
-            Name
-          </label>
-          {showError("name") && (
-            <InlineErrorMessage idName="name" message={errors.name} />
-          )}
+        {/* Name */}
+        <FormField
+          fieldName={"name"}
+          label={"Name"}
+          showError={showError}
+          error={errors.name}
+        >
           <input
             type="text"
             id="name"
@@ -224,14 +218,14 @@ function SimpleForm() {
             aria-required="true"
             ref={(el) => registerFieldRef("name", el)}
           />
-        </div>
-        <div className={styles["form__field"]}>
-          <label htmlFor="email" className={styles["form__label"]}>
-            Email
-          </label>
-          {showError("email") && (
-            <InlineErrorMessage idName="email" message={errors.email} />
-          )}
+        </FormField>
+        {/* Email */}
+        <FormField
+          fieldName={"email"}
+          label={"Email"}
+          showError={showError}
+          error={errors.email}
+        >
           <input
             type="email"
             id="email"
@@ -245,14 +239,15 @@ function SimpleForm() {
             aria-required="true"
             ref={(el) => registerFieldRef("email", el)}
           />
-        </div>
-        <div className={styles["form__field"]}>
-          <label htmlFor="password" className={styles["form__label"]}>
-            Password
-          </label>
-          {showError("password") && (
-            <InlineErrorMessage idName="password" message={errors.password} />
-          )}
+        </FormField>
+
+        {/* Password */}
+        <FormField
+          fieldName={"password"}
+          label={"Password"}
+          showError={showError}
+          error={errors.password}
+        >
           <input
             type="password"
             id="password"
@@ -276,14 +271,15 @@ function SimpleForm() {
             Password must be at least 8 characters with at least 1 uppercase
             letter, 1 lowercase letter, and 1 number.
           </div>
-        </div>
-        <div className={styles["form__field"]}>
-          <label className={styles["form__label"]} htmlFor="age">
-            Age
-          </label>
-          {showError("age") && (
-            <InlineErrorMessage idName="age" message={errors.age} />
-          )}
+        </FormField>
+
+        {/* Age */}
+        <FormField
+          fieldName={"age"}
+          label={"Age"}
+          showError={showError}
+          error={errors.age}
+        >
           <input
             type="number"
             id="age"
@@ -299,14 +295,15 @@ function SimpleForm() {
             aria-required="true"
             ref={(el) => registerFieldRef("age", el)}
           />
-        </div>
-        <div className={styles["form__field"]}>
-          <label htmlFor="gender" className={styles["form__label"]}>
-            Gender
-          </label>
-          {showError("gender") && (
-            <InlineErrorMessage idName="gender" message={errors.gender} />
-          )}
+        </FormField>
+
+        {/* Gender */}
+        <FormField
+          fieldName={"gender"}
+          label={"Gender"}
+          showError={showError}
+          error={errors.gender}
+        >
           <select
             id="gender"
             name="gender"
@@ -325,7 +322,7 @@ function SimpleForm() {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-        </div>
+        </FormField>
       </fieldset>
 
       {/* Fieldset */}
@@ -424,34 +421,34 @@ function SimpleForm() {
       {/* Fieldset */}
       <fieldset className={styles["stack"]}>
         <legend>Appointment</legend>
-        <div className={styles["form__field"]}>
-          <label htmlFor="date" className={styles["form__label"]}>
-            Date
-          </label>
-          {showError("date") && (
-            <InlineErrorMessage idName="date" message={errors.date} />
-          )}
+
+        {/* Date and Time */}
+        <FormField
+          fieldName={"date"}
+          label={"Date"}
+          showError={showError}
+          error={errors.date}
+        >
           <input
             type="date"
             id="date"
             name="date"
             required
             value={formData.date}
-            // onChange={(e) => setFormData({ ...formData, date: e.target.value })}
             onChange={handleChange}
             aria-describedby={showError("date") ? "date-error" : undefined}
             aria-invalid={showError("date") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("date", el)}
           />
-        </div>
-        <div className={styles["form__field"]}>
-          <label htmlFor="time" className={styles["form__label"]}>
-            Time
-          </label>
-          {showError("time") && (
-            <InlineErrorMessage idName="time" message={errors.time} />
-          )}
+        </FormField>
+
+        <FormField
+          fieldName={"time"}
+          label={"Time"}
+          showError={showError}
+          error={errors.time}
+        >
           <input
             type="time"
             id="time"
@@ -464,13 +461,15 @@ function SimpleForm() {
             aria-required="true"
             ref={(el) => registerFieldRef("time", el)}
           />
-        </div>
+        </FormField>
 
         {/* Toggle v1 */}
-        <div className={styles["form__field"]}>
-          <label htmlFor="earlyContact" className={styles["form__label"]}>
-            Contact for earlier availability
-          </label>
+        <FormField
+          fieldName={"earlyContact"}
+          label={"Contact for earlier availability"}
+          showError={showError}
+          error={errors.earlyContact}
+        >
           <div className={styles["form__switch-wrapper"]}>
             <div className={styles["form__switch"]}>
               <input
@@ -480,7 +479,6 @@ function SimpleForm() {
                 name="earlyContact"
                 checked={formData.earlyContact}
                 onChange={handleChange}
-                ref={(el) => registerFieldRef("earlyContact", el)}
                 aria-describedby="earlyContact-description"
               />
               <span
@@ -495,7 +493,7 @@ function SimpleForm() {
               {formData.earlyContact ? "Yes please" : "No thanks"}
             </span>
           </div>
-        </div>
+        </FormField>
       </fieldset>
 
       {/* Form action */}
