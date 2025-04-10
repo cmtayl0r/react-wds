@@ -3,12 +3,14 @@ import TodoList from "./components/projects/todo-list/TodoList";
 import FetchData from "./components/projects/custom-hooks/FetchData";
 import ChangeArray from "./components/projects/custom-hooks/ChangeArray";
 import LocalStorage from "./components/projects/custom-hooks/LocalStorage";
+import SimpleForm from "./components/projects/forms/SimpleForm";
 
 function App() {
   return (
     <>
       <h1>React WDS</h1>
-      <LocalStorage />
+      <SimpleForm />
+      {/* <LocalStorage /> */}
       {/* <ChangeArray /> */}
       {/* <FetchData /> */}
       {/* <TodoList /> */}

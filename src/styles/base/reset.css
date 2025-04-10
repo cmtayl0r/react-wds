@@ -14,6 +14,13 @@
   scroll-behavior: smooth;
 }
 
+/* Define base rem scale */
+html {
+  font-size: 100%;
+  /* 1rem = 16px, scalable */
+  /* Disregarded if using fluid font size system */
+}
+
 /* Use a more-intuitive box-sizing model */
 *,
 *::before,
@@ -31,8 +38,7 @@
 img,
 picture,
 video,
-canvas,
-svg {
+canvas {
   display: block;
   max-width: 100%;
   /* max-inline-size: 100%;

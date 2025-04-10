@@ -1,0 +1,294 @@
+:root {
+  --form-error-color: hsl(0, 100%, 70%);
+  --form-error-bg: hsl(0, 100%, 95%);
+  --form-valid-color: hsl(143, 100%, 32%);
+}
+
+/* 
+--------------------------------------------------------------------------------
+FORM STRUCTURE
+--------------------------------------------------------------------------------
+*/
+
+.form__field {
+  display: flex;
+  flex-flow: column;
+  gap: 0.25rem;
+}
+
+.form__label {
+  font-weight: bold;
+}
+
+.form__error {
+  color: var(--form-error-color);
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.form__field--error {
+  padding-left: 1rem;
+  border-left: 5px solid var(--form-error-color);
+}
+
+.form__error-summary {
+  color: var(--form-error-color);
+  background: var(--form-error-bg);
+  border-radius: 0.25em;
+  padding: 1rem;
+  border: 3px solid var(--form-error-color);
+
+  & ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  & li {
+    list-style: none;
+  }
+
+}
+
+.form__radio-group,
+.form__checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form__group-legend {
+  color: orange;
+  font-size: var(--fs-base);
+}
+
+/* Every Layout stack */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.stack>* {
+  margin-block: 0;
+}
+
+.stack> :nth-child(2) {
+  margin-block-start: 0;
+}
+
+.stack>*+* {
+  margin-block-start: 1.5rem;
+}
+
+.stack-large>*+* {
+  margin-block-start: 3rem;
+}
+
+.stack-small>*+* {
+  margin-block-start: 1rem;
+}
+
+/* input:valid:not(:placeholder-shown),
+select:valid {
+  border-color: green;
+}
+
+input:invalid:not(:placeholder-shown),
+select:invalid {
+  border-color: var(--form-error-color);
+} */
+
+/* 
+--------------------------------------------------------------------------------
+DATE AND TIME INPUT
+--------------------------------------------------------------------------------
+*/
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+/* input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.inputWrapper .customInputIcon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+} */
+
+/* 
+--------------------------------------------------------------------------------
+TOGGLES
+--------------------------------------------------------------------------------
+*/
+
+.form__switch-wrapper {
+  --switch-width: 52px;
+  --switch-height: 32px;
+  --switch-thumb-size: 24px;
+  --switch-padding: 4px;
+
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+}
+
+.form__switch {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: var(--switch-width);
+  height: var(--switch-height);
+}
+
+.form__switch-description {
+  font-weight: normal;
+}
+
+/* Hide native checkbox */
+.form__switch input[type="checkbox"] {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Slider base */
+.form__switch .form__switch-handle {
+  position: absolute;
+  inset: 0;
+  background-color: white;
+  border-radius: 24px;
+  transition: background-color 0.2s ease;
+  z-index: 1;
+}
+
+/* Slider thumb */
+.form__switch .form__switch-handle::before {
+  content: "";
+  position: absolute;
+  height: var(--switch-thumb-size);
+  width: var(--switch-thumb-size);
+  left: var(--switch-padding);
+  bottom: var(--switch-padding);
+  background-color: var(--color-black);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+/* Toggle ON state */
+.form__switch input[type="checkbox"]:checked+.form__switch-handle {
+  background-color: var(--form-valid-color);
+}
+
+.form__switch input[type="checkbox"]:checked+.form__switch-handle::before {
+  transform: translateX(calc(var(--switch-width) - var(--switch-thumb-size) - 2 * var(--switch-padding)));
+}
+
+input:focus-visible+.form__switch-handle {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 0.25rem;
+}
+
+/* 
+--------------------------------------------------------------------------------
+CHECKBOX AND RADIO
+--------------------------------------------------------------------------------
+*/
+
+input[type='radio'],
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
+.form__checkbox-item,
+.form__radio-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+input[type='radio'],
+input[type='checkbox'] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  appearance: none;
+  /* For iOS < 15 to remove gradient background */
+  background-color: var(--color-white);
+  /* Not removed via appearance */
+  margin: 0;
+
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.25rem solid var(--color-gray-light);
+
+  /* To center before/checked inner elements */
+  display: grid;
+  place-content: center;
+}
+
+input[type='radio']:hover,
+input[type='checkbox']:hover {
+  border-color: var(--color-gray);
+}
+
+input[type='radio']::before,
+input[type='checkbox']::before {
+  content: '';
+  width: 1.25rem;
+  height: 1.25rem;
+  /* box-shadow: inset 2em 1em var(--color-gray-dark); */
+  /* transform: scale(0); */
+  visibility: hidden;
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+}
+
+input[type='radio']:checked::before,
+input[type='checkbox']:checked::before {
+  /* transform: scale(1); */
+  visibility: visible;
+}
+
+/* Radio */
+input[type='radio'] {
+  border-radius: 50%;
+}
+
+input[type='radio']::before {
+  border-radius: 50%;
+}
+
+/* Checkbox */
+input[type='checkbox'] {
+  /* border-radius: ; */
+}
+
+input[type='checkbox']::before {
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}

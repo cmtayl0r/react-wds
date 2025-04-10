@@ -29,6 +29,7 @@ FORMS (2025)
   --form-focus-color: #007bff;
   --form-disabled-bg: #666666;
   --form-alert-color: #a83e00;
+  --form-success-color: #00a83e;
 }
 
 /* ================================
@@ -96,6 +97,7 @@ select:focus,
 textarea:hover,
 textarea:focus {
   border-color: var(--form-focus-color);
+  cursor: pointer;
 }
 
 input:active,
@@ -119,6 +121,12 @@ textarea:invalid {
   border-color: var(--form-alert-color);
 }
 
+input:valid,
+select:valid,
+textarea:valid {
+  border-color: var(--form-success-color);
+}
+
 /* ================================
    🛠 Additional Styles
    ================================ */
@@ -128,5 +136,5 @@ textarea:invalid {
 
 [type="radio"],
 [type="checkbox"] {
-  vertical-align: text-top;
+  /* vertical-align: text-top; */
 }
