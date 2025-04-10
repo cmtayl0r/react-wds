@@ -5,6 +5,14 @@ import ErrorSummary from "./ErrorSummary";
 import { fieldIsEmpty } from "../../../utils/validation";
 import FormField from "./FormField";
 
+/*
+  User inputs content
+  On submission of form, user receives error summary
+  Clicks from error summary scroll to error field
+  On correct input, error message and styles are removed
+*/
+
+// ! Fix focus to first checkbox or radio from error summary
 // * onChange={(e) => setFormData({ ...formData, name: e.target.value })} , instead of handleChange on inputs
 // * fieldIsEmpty is a helper function to check if a field is empty
 
@@ -151,7 +159,7 @@ function SimpleForm() {
     } else {
       // formRef.current.reportValidity(); // native form validation
       // Focus the error summary
-      errorRef.current?.scrollIntoView({ behavior: "smooth" });
+      errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       errorRef.current?.focus();
 
       // Focus the first error field
@@ -331,6 +339,8 @@ function SimpleForm() {
 
         {/* Sub Fieldset [Checkboxes] */}
         <fieldset
+          ref={(el) => registerFieldRef("interests", el)}
+          tabIndex={-1}
           className={`${styles["form__checkbox-group"]} ${
             showError("interests") ? styles["form__field--error"] : ""
           }`}
@@ -358,6 +368,8 @@ function SimpleForm() {
 
         {/* Sub Fieldset [Radio] */}
         <fieldset
+          ref={(el) => registerFieldRef("subscription", el)}
+          tabIndex={-1}
           aria-describedby={
             showError("subscription") ? "subscription-error" : undefined
           }

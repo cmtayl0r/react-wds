@@ -33,6 +33,12 @@ FORM STRUCTURE
   border-left: 5px solid var(--form-error-color);
 }
 
+.form__field--error input,
+.form__field--error textarea,
+.form__field--error select {
+  border-color: var(--form-error-color);
+}
+
 .form__error-summary {
   color: var(--form-error-color);
   background: var(--form-error-bg);
@@ -211,7 +217,6 @@ TOGGLES
 
 input:focus-visible+.form__switch-handle {
   outline: 3px solid var(--focus-ring);
-  outline-offset: 0.25rem;
 }
 
 /* 
