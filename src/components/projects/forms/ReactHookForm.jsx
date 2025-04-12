@@ -29,6 +29,7 @@ function ReactHookForm() {
       time: "",
       earlyContact: false,
       subscription: "",
+      terms: false,
     },
     mode: "onTouched", // Delays validation until field is touched (first blur)
     reValidateMode: "onChange", // Re-validate field on every change after initial blur
@@ -336,7 +337,7 @@ function ReactHookForm() {
       <fieldset className={styles.stack}>
         <legend>Preferences</legend>
 
-        {/* SUBSCRIPTION INPUT */}
+        {/* SUBSCRIPTION RADIO GROUP */}
 
         <fieldset
           className={`
@@ -370,7 +371,7 @@ function ReactHookForm() {
           ))}
         </fieldset>
 
-        {/* INTERESTS INPUT */}
+        {/* INTERESTS CHECKBOX GROUP */}
 
         <fieldset
           className={`
@@ -401,6 +402,32 @@ function ReactHookForm() {
             </div>
           ))}
         </fieldset>
+
+        {/* TERMS SINGLE CHECKBOX */}
+
+        <div
+          className={`
+            ${styles["form__field"]} 
+            ${errors?.terms?.message ? styles["form__field--error"] : ""}
+          `}
+        >
+          <label className={styles["form__checkbox-item"]}>
+            <input
+              id="terms"
+              type="checkbox"
+              {...registerWithRef("terms", {
+                required: "You must agree to the terms",
+              })}
+            />
+            I agree to the terms and conditions
+          </label>
+          {errors?.terms?.message && (
+            <InlineErrorMessage
+              idName="terms"
+              message={errors?.terms?.message}
+            />
+          )}
+        </div>
       </fieldset>
 
       <button type="submit">{isSubmitting ? "Submitting..." : "Submit"}</button>
