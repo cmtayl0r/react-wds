@@ -1,9 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useRef } from "react";
 import styles from "./SimpleForm.module.css";
 import ErrorSummary from "./ErrorSummary";
 import FormFieldRHF from "./FormFieldRHF";
 import { Calendar, Clock, Clock10Icon } from "lucide-react";
+import InlineErrorMessage from "./InlineErrorMessage";
 
 // ! Keyboard navigation from error summary doesn't work (click does)
 
@@ -27,6 +28,7 @@ function ReactHookForm() {
       date: "",
       time: "",
       earlyContact: false,
+      subscription: "",
     },
     mode: "onTouched", // Delays validation until field is touched (first blur)
     reValidateMode: "onChange", // Re-validate field on every change after initial blur
@@ -48,7 +50,9 @@ function ReactHookForm() {
       ...fieldProps,
       ref: (el) => {
         ref(el);
-        if (el) inputRefs.current[name] = el;
+        if (el && !inputRefs.current[name]) {
+          inputRefs.current[name] = el;
+        }
       },
     };
   };
@@ -81,6 +85,10 @@ function ReactHookForm() {
       `Time must be between ${start} and ${end}`
     );
   };
+
+  // Values for radio and checkbox groups
+  const interests = ["sports", "music", "reading"];
+  const subscriptionOptions = ["basic", "premium"];
 
   // Function to handle form errors
   function onError(errors) {
@@ -228,6 +236,7 @@ function ReactHookForm() {
       </fieldset>
 
       {/* FIELDSET */}
+
       <fieldset className={styles.stack}>
         <legend>Appointment</legend>
 
@@ -320,6 +329,78 @@ function ReactHookForm() {
             />
           </div>
         </FormFieldRHF>
+      </fieldset>
+
+      {/* FIELDSET */}
+
+      <fieldset className={styles.stack}>
+        <legend>Preferences</legend>
+
+        {/* SUBSCRIPTION INPUT */}
+
+        <fieldset
+          className={`
+            ${styles["form__radio-group"]} 
+            ${errors?.subscription?.message ? styles["form__field--error"] : ""}
+          `}
+          tabIndex={-1}
+          id="subscription"
+        >
+          <legend className={styles["form__group-legend"]}>
+            Subscription Type
+          </legend>
+          {errors?.subscription?.message && (
+            <InlineErrorMessage
+              idName="subscription"
+              message={errors?.subscription?.message}
+            />
+          )}
+          {subscriptionOptions.map((option) => (
+            <div key={option} className={styles["form__radio-item"]}>
+              <input
+                id={`subscription-${option}`}
+                type="radio"
+                value={option}
+                {...registerWithRef("subscription", {
+                  required: "Select a subscription",
+                })}
+              />
+              <label htmlFor={`subscription-${option}`}>{option}</label>
+            </div>
+          ))}
+        </fieldset>
+
+        {/* INTERESTS INPUT */}
+
+        <fieldset
+          className={`
+            ${styles["form__checkbox-group"]} 
+            ${errors?.interests?.message ? styles["form__field--error"] : ""}
+          `}
+          tabIndex={-1}
+          id="interests"
+        >
+          <legend className={styles["form__group-legend"]}>Interests</legend>
+          {errors?.interests?.message && (
+            <InlineErrorMessage
+              idName="interests"
+              message={errors?.interests?.message}
+            />
+          )}
+          {interests.map((interest) => (
+            <div key={interest} className={styles["form__checkbox-item"]}>
+              <input
+                id={`interests-${interest}`}
+                type="checkbox"
+                value={interest}
+                {...registerWithRef(`interests`, {
+                  required: "Select at least one interest",
+                })}
+              />
+              <label htmlFor={`interests-${interest}`}>{interest}</label>
+            </div>
+          ))}
+        </fieldset>
       </fieldset>
 
       <button type="submit">{isSubmitting ? "Submitting..." : "Submit"}</button>
