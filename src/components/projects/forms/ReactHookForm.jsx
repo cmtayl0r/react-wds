@@ -6,8 +6,6 @@ import FormFieldRHF from "./FormFieldRHF";
 import { Calendar, Clock, Clock10Icon } from "lucide-react";
 import InlineErrorMessage from "./InlineErrorMessage";
 
-// ! Keyboard navigation from error summary doesn't work (click does)
-
 function ReactHookForm() {
   const {
     register, // Function to register input fields
