@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./SimpleForm.module.css";
 import ErrorSummary from "./ErrorSummary";
 import FormFieldRHF from "./FormFieldRHF";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Clock10Icon } from "lucide-react";
 
 // ! Keyboard navigation from error summary doesn't work (click does)
 
@@ -11,13 +11,9 @@ function ReactHookForm() {
   const {
     register, // Function to register input fields
     handleSubmit, // Function to handle form submission
-    watch, // Function to watch field values
     formState: {
       errors,
       isSubmitting, // Form is submitting
-      isSubmitSuccessful,
-      isValid, // Form is valid if all fields are valid
-      dirtyFields, // Fields that have been modified
       touchedFields, // Fields that have been touched
     },
   } = useForm({
@@ -25,27 +21,36 @@ function ReactHookForm() {
       name: "",
       email: "",
       password: "",
+      age: undefined,
+      gender: "",
+      date: "",
+      time: "",
+      earlyContact: false,
     },
     mode: "onTouched", // Delays validation until field is touched (first blur)
     reValidateMode: "onChange", // Re-validate field on every change after initial blur
   });
 
-  // Stores references to all form field elements by their name
-  // This allows us to programmatically focus specific fields later
-  const fieldRefs = useRef({});
   // Reference to the error summary container element
   // This lets us focus and scroll to the error summary
   const errorRef = useRef(null);
+  // Central ref map to store DOM elements for each field
+  const inputRefs = useRef({}); // Store refs centrally
 
-  // This callback creates a function that registers DOM elements as refs
-  // It's memoized so it doesn't recreate on every render
-  const registerFieldRef = useCallback(
-    (name) => (el) => {
-      // If element exists (e.g. input) then store ref in fieldRefs
-      if (el) fieldRefs.current[name] = el;
-    },
-    [] // Empty dependency array ensures this function remains stable
-  );
+  // Helper: combine RHF's ref + our custom ref tracking
+  // This allows us to access the DOM element for each field
+  // This collects all refs for each field and stores them in inputRefs
+  // we replace register with registerWithRef
+  const registerWithRef = (name, options) => {
+    const { ref, ...fieldProps } = register(name, options);
+    return {
+      ...fieldProps,
+      ref: (el) => {
+        ref(el);
+        if (el) inputRefs.current[name] = el;
+      },
+    };
+  };
 
   // Get all password validation errors
   const getPasswordErrors = (value) => {
@@ -60,6 +65,20 @@ function ReactHookForm() {
     if (!currValue || !/[0-9]/.test(currValue)) missing.push("number");
 
     return missing.length > 0 ? `Password needs: ${missing.join(", ")}` : true;
+  };
+
+  // Validate business hours
+  const validateBusinessHours = (value, [start = "09:00", end = "17:00"]) => {
+    const [h, m] = value.split(":").map(Number);
+    const total = h * 60 + m;
+    const [sh, sm] = start.split(":").map(Number);
+    const [eh, em] = end.split(":").map(Number);
+    const startTotal = sh * 60 + sm;
+    const endTotal = eh * 60 + em;
+    return (
+      (total >= startTotal && total <= endTotal) ||
+      `Time must be between ${start} and ${end}`
+    );
   };
 
   // Function to handle form errors
@@ -98,10 +117,11 @@ function ReactHookForm() {
       {/* ERROR SUMMARY */}
       <ErrorSummary
         ref={errorRef}
+        tabIndex={-1}
         errors={Object.fromEntries(
           Object.entries(errors).map(([key, val]) => [key, val?.message])
         )}
-        fieldRefs={fieldRefs.current}
+        fieldRefs={inputRefs}
       />
 
       {/* FIELDSET */}
@@ -118,14 +138,13 @@ function ReactHookForm() {
           <input
             id="name"
             type="text"
-            {...register("name", {
+            {...registerWithRef("name", {
               required: "Name is required",
               validate: {
                 minLength: (value) =>
                   value.length >= 2 || "Name must be at least 2 characters",
               },
             })}
-            ref={(el) => registerFieldRef("name", el)}
           />
         </FormFieldRHF>
 
@@ -139,14 +158,13 @@ function ReactHookForm() {
           <input
             id="email"
             type="email"
-            {...register("email", {
+            {...registerWithRef("email", {
               required: "Email is required",
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: "Invalid email address",
               },
             })}
-            ref={(el) => registerFieldRef("email", el)}
           />
         </FormFieldRHF>
 
@@ -163,22 +181,109 @@ function ReactHookForm() {
           <input
             id="password"
             type="password"
-            {...register("password", {
+            {...registerWithRef("password", {
               required: "Password is required",
               validate: {
                 requirements: (value) => getPasswordErrors(value),
               },
-              // validate: {
-              //   minLength: (value) => value.length >= 8 || "minLength",
-              //   checkLowercase: (value) =>
-              //     /[a-z]/.test(value) || "checkLowercase",
-              //   checkUppercase: (value) =>
-              //     /[A-Z]/.test(value) || "checkUppercase",
-              //   checkNumber: (value) => /[0-9]/.test(value) || "checkNumber",
-              // },
             })}
-            ref={(el) => registerFieldRef("password", el)}
           />
+        </FormFieldRHF>
+
+        {/* AGE INPUT */}
+
+        <FormFieldRHF fieldName="age" label="Age" error={errors?.age?.message}>
+          <input
+            id="age"
+            type="number"
+            inputMode="numeric"
+            {...registerWithRef("age", {
+              valueAsNumber: true, // Convert string to number
+              required: "Age is required",
+              min: { value: 18, message: "Your age must be over 18" },
+              max: { value: 60, message: "Maximum age is 60" },
+              validate: (value) =>
+                !isNaN(value) || "Please enter a valid number",
+            })}
+          />
+        </FormFieldRHF>
+
+        {/* GENDER INPUT   */}
+
+        <FormFieldRHF
+          fieldName="gender"
+          label="Gender"
+          error={errors?.gender?.message}
+        >
+          <select
+            id="gender"
+            {...registerWithRef("gender", { required: "Select your gender" })}
+          >
+            <option value="">Select your gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </FormFieldRHF>
+      </fieldset>
+
+      {/* FIELDSET */}
+      <fieldset className={styles.stack}>
+        <legend>Appointment</legend>
+
+        {/* DATE INPUT */}
+
+        <FormFieldRHF
+          fieldName="date"
+          label="Date"
+          error={errors?.date?.message}
+        >
+          <div className={styles["form__input-icon-wrapper"]}>
+            <input
+              id="date"
+              type="date"
+              {...registerWithRef("date", {
+                required: "Select an appointment date",
+                validate: {
+                  pastDate: (value) => {
+                    const today = new Date().toISOString().split("T")[0];
+                    return value >= today || "Date must be in the future";
+                  },
+                },
+              })}
+            />
+            <Calendar
+              className={styles["form__input-icon"]}
+              aria-hidden="true"
+              focusable="false"
+            />
+          </div>
+        </FormFieldRHF>
+
+        {/* TIME INPUT */}
+
+        <FormFieldRHF
+          fieldName="time"
+          label="Time"
+          error={errors?.time?.message}
+        >
+          <div className={styles["form__input-icon-wrapper"]}>
+            <input
+              id="time"
+              type="time"
+              {...registerWithRef("time", {
+                required: "Select an appointment time",
+                validate: {
+                  businessHours: (value) =>
+                    validateBusinessHours(value, ["09:00", "17:00"]),
+                },
+              })}
+            />
+            <Clock
+              className={styles["form__input-icon"]}
+              aria-hidden="true"
+              focusable="false"
+            />
+          </div>
         </FormFieldRHF>
       </fieldset>
 

@@ -8,7 +8,7 @@ const ErrorSummary = forwardRef(({ errors, fieldRefs }, ref) => {
   // Function to scroll and focus the first error field
   const focusField = (e, fieldId) => {
     e.preventDefault();
-    // Try refs first, then fallback to getElementById
+    // Get the DOM element for the field and focus it
     const field = fieldRefs?.[fieldId] || document.getElementById(fieldId);
     field?.focus();
   };
