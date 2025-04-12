@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./SimpleForm.module.css";
 import ErrorSummary from "./ErrorSummary";
@@ -16,6 +16,7 @@ function ReactHookForm() {
       isSubmitting, // Form is submitting
       touchedFields, // Fields that have been touched
     },
+    control, // Control prop from react-hook-form
   } = useForm({
     defaultValues: {
       name: "",
@@ -282,6 +283,40 @@ function ReactHookForm() {
               className={styles["form__input-icon"]}
               aria-hidden="true"
               focusable="false"
+            />
+          </div>
+        </FormFieldRHF>
+
+        {/* CONTACT FOR EARLIER AVAILABILITY */}
+
+        <FormFieldRHF
+          fieldName="earlyContact"
+          label="Contact for earlier availability"
+          error={errors?.earlyContact?.message}
+        >
+          <div className={styles["form__switch-wrapper"]}>
+            {/* 
+              We use Controller in this situation because React Hook Form cannot directly register custom inputs like switches that manage their own checked state, so Controller bridges the gap by connecting the controlled component to RHF’s form state and validation system.
+            */}
+            <Controller
+              control={control}
+              name="earlyContact"
+              render={({ field }) => (
+                <div className={styles["form__switch"]}>
+                  <input
+                    type="checkbox"
+                    role="switch"
+                    id="earlyContact"
+                    aria-checked={field.value}
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                  />
+                  <span
+                    className={styles["form__switch-handle"]}
+                    aria-hidden="true"
+                  />
+                </div>
+              )}
             />
           </div>
         </FormFieldRHF>
