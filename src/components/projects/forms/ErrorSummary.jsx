@@ -2,26 +2,26 @@ import { forwardRef } from "react";
 import styles from "./SimpleForm.module.css";
 
 const ErrorSummary = forwardRef(({ errors, fieldRefs }, ref) => {
-  // Function to handle clicking on an error link
-  const handleErrorClick = (e, fieldId) => {
-    e.preventDefault();
+  // Only render if there are errors
+  if (Object.keys(errors).length === 0) return null;
 
-    // If we have a ref for this field, focus it
-    if (fieldRefs && fieldRefs[fieldId]) {
-      fieldRefs[fieldId].focus();
-    } else {
-      // Fallback to traditional anchor behavior if no ref exists
-      const element = document.getElementById(fieldId);
-      if (element) {
-        element.focus();
-      }
+  // Function to scroll and focus the first error field
+  const focusField = (e, fieldId) => {
+    e.preventDefault();
+    // Try refs first, then fallback to getElementById
+    const field = fieldRefs?.[fieldId] || document.getElementById(fieldId);
+    field?.focus();
+  };
+
+  // Function to handle keyboard navigation
+  const handleKeyDown = (e, fieldId) => {
+    // Add Space key support (Enter already works natively)
+    if (e.key === " " || e.key === "Spacebar") {
+      e.preventDefault();
+      focusField(e, fieldId);
     }
   };
 
-  // Only render if there are errors
-  if (Object.keys(errors).length === 0) {
-    return null;
-  }
   return (
     <div
       ref={ref}
@@ -36,7 +36,11 @@ const ErrorSummary = forwardRef(({ errors, fieldRefs }, ref) => {
       <ul>
         {Object.entries(errors).map(([field, message]) => (
           <li key={field}>
-            <a href={`#${field}`} onClick={(e) => handleErrorClick(e, field)}>
+            <a
+              href={`#${field}`}
+              onClick={(e) => focusField(e, field)}
+              onKeyDown={(e) => handleKeyDown(e, field)}
+            >
               {message}
             </a>
           </li>

@@ -28,6 +28,14 @@ FORM STRUCTURE
   align-items: center;
 }
 
+.form__valid {
+  color: var(--form-valid-color);
+  display: flex;
+  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+}
+
 .form__field--error {
   padding-left: 1rem;
   border-left: 5px solid var(--form-error-color);

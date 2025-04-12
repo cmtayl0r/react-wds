@@ -1,30 +1,51 @@
-import { useForm, Controller, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import styles from "./SimpleForm.module.css";
-import InlineErrorMessage from "./InlineErrorMessage";
 import ErrorSummary from "./ErrorSummary";
-import FormField from "./FormField";
+import FormFieldRHF from "./FormFieldRHF";
 import { Calendar, Clock } from "lucide-react";
+
+// ! Keyboard navigation from error summary doesn't work (click does)
 
 function ReactHookForm() {
   const {
     register, // Function to register input fields
     handleSubmit, // Function to handle form submission
     watch, // Function to watch field values
-    formState: { errors, isSubmitting, isSubmitSuccessful, isValid },
+    formState: {
+      errors,
+      isSubmitting, // Form is submitting
+      isSubmitSuccessful,
+      isValid, // Form is valid if all fields are valid
+      dirtyFields, // Fields that have been modified
+      touchedFields, // Fields that have been touched
+    },
   } = useForm({
     defaultValues: {
       name: "",
       email: "",
       password: "",
     },
-    mode: "onChange",
+    mode: "onTouched", // Delays validation until field is touched (first blur)
+    reValidateMode: "onChange", // Re-validate field on every change after initial blur
   });
 
-  // Watch password field to validate requirements in real-time
-  const password = watch("password");
-
+  // Stores references to all form field elements by their name
+  // This allows us to programmatically focus specific fields later
+  const fieldRefs = useRef({});
+  // Reference to the error summary container element
+  // This lets us focus and scroll to the error summary
   const errorRef = useRef(null);
+
+  // This callback creates a function that registers DOM elements as refs
+  // It's memoized so it doesn't recreate on every render
+  const registerFieldRef = useCallback(
+    (name) => (el) => {
+      // If element exists (e.g. input) then store ref in fieldRefs
+      if (el) fieldRefs.current[name] = el;
+    },
+    [] // Empty dependency array ensures this function remains stable
+  );
 
   // Get all password validation errors
   const getPasswordErrors = (value) => {
@@ -44,6 +65,18 @@ function ReactHookForm() {
   // Function to handle form errors
   function onError(errors) {
     console.log("Form submission failed with errors:", errors);
+    // scroll to error summary container
+    errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Focus on the first error link in the summary (not just the container)
+    setTimeout(() => {
+      const firstErrorLink = errorRef.current?.querySelector("a");
+      if (firstErrorLink) {
+        firstErrorLink.focus();
+      } else {
+        // Fallback to summary container if links aren't ready
+        errorRef.current?.focus();
+      }
+    }, 100);
   }
 
   // Function to handle form submission
@@ -62,26 +95,26 @@ function ReactHookForm() {
     >
       <h3>React Hook Form</h3>
 
+      {/* ERROR SUMMARY */}
+      <ErrorSummary
+        ref={errorRef}
+        errors={Object.fromEntries(
+          Object.entries(errors).map(([key, val]) => [key, val?.message])
+        )}
+        fieldRefs={fieldRefs.current}
+      />
+
       {/* FIELDSET */}
       <fieldset className={styles.stack}>
         <legend>Personal Details</legend>
 
         {/* NAME INPUT */}
-        <div
-          className={`
-            ${styles["form__field"]} 
-            ${errors?.name?.message ? styles["form__field--error"] : ""}
-          `}
+
+        <FormFieldRHF
+          fieldName="name"
+          label="Name"
+          error={errors?.name?.message}
         >
-          <label
-            htmlFor="name"
-            className={`
-              ${styles["form__label"]} 
-              ${errors?.name?.message ? styles["form__label--error"] : ""}
-          `}
-          >
-            Name
-          </label>
           <input
             id="name"
             type="text"
@@ -92,25 +125,41 @@ function ReactHookForm() {
                   value.length >= 2 || "Name must be at least 2 characters",
               },
             })}
+            ref={(el) => registerFieldRef("name", el)}
           />
-          {errors?.name?.message && <p>{errors?.name?.message}</p>}
-        </div>
-        {/* PASSWORD INPUT */}
-        <div
-          className={`
-            ${styles["form__field"]} 
-            ${errors?.password?.message ? styles["form__field--error"] : ""}
-          `}
+        </FormFieldRHF>
+
+        {/* EMAIL INPUT */}
+
+        <FormFieldRHF
+          fieldName="email"
+          label="Email"
+          error={errors?.email?.message}
         >
-          <label
-            htmlFor="password"
-            className={`
-              ${styles["form__label"]} 
-              ${errors?.password?.message ? styles["form__label--error"] : ""}
-          `}
-          >
-            Password
-          </label>
+          <input
+            id="email"
+            type="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Invalid email address",
+              },
+            })}
+            ref={(el) => registerFieldRef("email", el)}
+          />
+        </FormFieldRHF>
+
+        {/* PASSWORD INPUT */}
+
+        <FormFieldRHF
+          fieldName="password"
+          label="Password"
+          error={errors?.password?.message}
+          showValidMessage={true}
+          isDirty={touchedFields.password}
+          isTouched={touchedFields.password}
+        >
           <input
             id="password"
             type="password"
@@ -128,22 +177,12 @@ function ReactHookForm() {
               //   checkNumber: (value) => /[0-9]/.test(value) || "checkNumber",
               // },
             })}
+            ref={(el) => registerFieldRef("password", el)}
           />
-          {/* Show either error or success message */}
-          {errors?.password?.message ? (
-            <p>{errors.password.message}</p>
-          ) : (
-            password && (
-              <p className={styles.success}>
-                ✅ Password meets all requirements
-              </p>
-            )
-          )}
-        </div>
-        {/*  */}
+        </FormFieldRHF>
       </fieldset>
 
-      <button type="submit">Submit</button>
+      <button type="submit">{isSubmitting ? "Submitting..." : "Submit"}</button>
     </form>
   );
 }
