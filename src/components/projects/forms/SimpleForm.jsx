@@ -4,15 +4,18 @@ import InlineErrorMessage from "./InlineErrorMessage";
 import ErrorSummary from "./ErrorSummary";
 import { fieldIsEmpty } from "../../../utils/validation";
 import FormField from "./FormField";
+import FormFieldGroup from "./FormFieldGroup";
+import { Calendar, Clock } from "lucide-react";
 
 /*
-  User inputs content
+  User inputs content into form
   On submission of form, user receives error summary
   Clicks from error summary scroll to error field
-  On correct input, error message and styles are removed
+  On correct input, error message and styles are removed (if valid)
 */
 
 // ! Fix focus to first checkbox or radio from error summary
+// ! No layout component for single checkbox with no visible label
 // * onChange={(e) => setFormData({ ...formData, name: e.target.value })} , instead of handleChange on inputs
 // * fieldIsEmpty is a helper function to check if a field is empty
 
@@ -134,6 +137,24 @@ function SimpleForm() {
     }
   };
 
+  // Function to check if a field has an error
+  // true = If the form has been submitted and the field has an error
+  const fieldHasError = (field) => hasSubmitted && !!errors[field];
+
+  // Function to scroll and focus the first error field
+  // Memoize if passed to children or used in effect dependencies
+  const scrollToFirstError = () => {
+    // Find the first error field
+    const firstErrorField = Object.keys(errors)[0];
+    // .current is used to access the value of the ref
+    const element = fieldRefs.current[firstErrorField];
+    if (element) {
+      // If we have a ref for this field, scroll and focus it
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => element.focus(), 100);
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -161,16 +182,8 @@ function SimpleForm() {
       // Focus the error summary
       errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       errorRef.current?.focus();
-
       // Focus the first error field
-      const firstErrorField = Object.keys(newErrors)[0];
-      // If there is a first error field and it has a ref
-      if (firstErrorField && fieldRefs.current[firstErrorField]) {
-        setTimeout(() => {
-          // Focus the first error field after a short delay
-          fieldRefs.current[firstErrorField].focus();
-        }, 100);
-      }
+      scrollToFirstError();
     }
   };
 
@@ -182,15 +195,11 @@ function SimpleForm() {
     }
   }, [formData, hasSubmitted, validateForm]);
 
-  // Function to return the error message for a given field only if the form has been submitted
-  const showError = (field) => hasSubmitted && errors[field];
-
   return (
     <form
       ref={formRef} // Assign a ref to the form in order to validate it
       noValidate // Disable browser validation because we're doing it ourselves
       onSubmit={handleSubmit}
-      className={styles.form}
     >
       <h3>Form</h3>
 
@@ -208,7 +217,7 @@ function SimpleForm() {
         <FormField
           fieldName={"name"}
           label={"Name"}
-          showError={showError}
+          showError={fieldHasError("name")}
           error={errors.name}
         >
           <input
@@ -221,8 +230,8 @@ function SimpleForm() {
             value={formData.name}
             // onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             onChange={handleChange}
-            aria-describedby={showError("name") ? "name-error" : undefined}
-            aria-invalid={showError("name") ? "true" : "false"}
+            aria-describedby={fieldHasError("name") ? "name-error" : undefined}
+            aria-invalid={fieldHasError("name") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("name", el)}
           />
@@ -231,7 +240,7 @@ function SimpleForm() {
         <FormField
           fieldName={"email"}
           label={"Email"}
-          showError={showError}
+          showError={fieldHasError("email")}
           error={errors.email}
         >
           <input
@@ -242,8 +251,10 @@ function SimpleForm() {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
-            aria-describedby={showError("email") ? "email-error" : undefined}
-            aria-invalid={showError("email") ? "true" : "false"}
+            aria-describedby={
+              fieldHasError("email") ? "email-error" : undefined
+            }
+            aria-invalid={fieldHasError("email") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("email", el)}
           />
@@ -253,7 +264,7 @@ function SimpleForm() {
         <FormField
           fieldName={"password"}
           label={"Password"}
-          showError={showError}
+          showError={fieldHasError("password")}
           error={errors.password}
         >
           <input
@@ -267,11 +278,11 @@ function SimpleForm() {
             value={formData.password}
             onChange={handleChange}
             aria-describedby={
-              showError("password")
+              fieldHasError("password")
                 ? "password-error password-help"
                 : "password-help"
             }
-            aria-invalid={showError("password") ? "true" : "false"}
+            aria-invalid={fieldHasError("password") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("password", el)}
           />
@@ -285,7 +296,7 @@ function SimpleForm() {
         <FormField
           fieldName={"age"}
           label={"Age"}
-          showError={showError}
+          showError={fieldHasError("age")}
           error={errors.age}
         >
           <input
@@ -298,8 +309,8 @@ function SimpleForm() {
             placeholder="Enter your age"
             value={formData.age}
             onChange={handleChange}
-            aria-describedby={showError("age") ? "age-error" : undefined}
-            aria-invalid={showError("age") ? "true" : "false"}
+            aria-describedby={fieldHasError("age") ? "age-error" : undefined}
+            aria-invalid={fieldHasError("age") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("age", el)}
           />
@@ -309,7 +320,7 @@ function SimpleForm() {
         <FormField
           fieldName={"gender"}
           label={"Gender"}
-          showError={showError}
+          showError={fieldHasError("gender")}
           error={errors.gender}
         >
           <select
@@ -318,8 +329,10 @@ function SimpleForm() {
             required
             value={formData.gender}
             onChange={handleChange}
-            aria-describedby={showError("gender") ? "gender-error" : undefined}
-            aria-invalid={showError("gender") ? "true" : "false"}
+            aria-describedby={
+              fieldHasError("gender") ? "gender-error" : undefined
+            }
+            aria-invalid={fieldHasError("gender") ? "true" : "false"}
             aria-required="true"
             ref={(el) => registerFieldRef("gender", el)}
           >
@@ -338,17 +351,16 @@ function SimpleForm() {
         <legend>Preferences</legend>
 
         {/* Sub Fieldset [Checkboxes] */}
-        <fieldset
+        <FormFieldGroup
           ref={(el) => registerFieldRef("interests", el)}
-          tabIndex={-1}
-          className={`${styles["form__checkbox-group"]} ${
-            showError("interests") ? styles["form__field--error"] : ""
-          }`}
+          fieldName={"interests"}
+          legend={"Interests"}
+          showError={fieldHasError("interests")}
+          errors={errors.interests}
+          aria-describedby={
+            fieldHasError("interests") ? "interests-error" : undefined
+          }
         >
-          <legend className={styles["form__group-legend"]}>Interests</legend>
-          {showError("interests") && (
-            <InlineErrorMessage idName="interests" message={errors.interests} />
-          )}
           {["sports", "music", "reading"].map((interest) => (
             <div key={interest} className={styles["form__checkbox-item"]}>
               <input
@@ -358,37 +370,24 @@ function SimpleForm() {
                 value={interest}
                 checked={formData.interests.includes(interest)}
                 onChange={handleChange}
-                aria-invalid={showError("interests") ? "true" : undefined}
+                aria-invalid={fieldHasError("interests") ? "true" : undefined}
                 ref={(el) => registerFieldRef(`interests-${interest}`, el)}
               />
               <label htmlFor={`interests-${interest}`}>{interest}</label>
             </div>
           ))}
-        </fieldset>
-
+        </FormFieldGroup>
         {/* Sub Fieldset [Radio] */}
-        <fieldset
+        <FormFieldGroup
           ref={(el) => registerFieldRef("subscription", el)}
-          tabIndex={-1}
+          fieldName={"subscription"}
+          legend={"Subscription type"}
+          showError={fieldHasError("subscription")}
+          errors={errors.subscription}
           aria-describedby={
-            showError("subscription") ? "subscription-error" : undefined
+            fieldHasError("subscription") ? "subscription-error" : undefined
           }
-          className={`${styles["form__radio-group"]} ${
-            showError("subscription") ? styles["form__field--error"] : ""
-          }`}
         >
-          <legend
-            id="subscription-label"
-            className={styles["form__group-legend"]}
-          >
-            Subscription Type
-          </legend>
-          {showError("subscription") && (
-            <InlineErrorMessage
-              idName="subscription"
-              message={errors.subscription}
-            />
-          )}
           {["basic", "premium"].map((option) => (
             <div key={option} className={styles["form__radio-item"]}>
               <input
@@ -398,19 +397,22 @@ function SimpleForm() {
                 value={option}
                 checked={formData.subscription === option}
                 onChange={handleChange}
-                aria-invalid={showError("subscription") ? "true" : undefined}
+                aria-invalid={
+                  fieldHasError("subscription") ? "true" : undefined
+                }
                 ref={(el) => registerFieldRef(`subscription-${option}`, el)}
               />
               <label htmlFor={`subscription-${option}`}>{option}</label>
             </div>
           ))}
-        </fieldset>
+        </FormFieldGroup>
+        {/*  */}
         <div
           className={`${styles["form__field"]} ${
-            showError("terms") ? styles["form__field--error"] : ""
+            fieldHasError("terms") ? styles["form__field--error"] : ""
           }`}
         >
-          {showError("terms") && (
+          {fieldHasError("terms") && (
             <InlineErrorMessage idName="terms" message={errors.terms} />
           )}
           <label className={styles["form__checkbox-item"]}>
@@ -421,8 +423,10 @@ function SimpleForm() {
               required
               checked={formData.terms}
               onChange={handleChange}
-              aria-describedby={showError("terms") ? "terms-error" : undefined}
-              aria-invalid={showError("terms") ? "true" : "false"}
+              aria-describedby={
+                fieldHasError("terms") ? "terms-error" : undefined
+              }
+              aria-invalid={fieldHasError("terms") ? "true" : "false"}
               ref={(el) => registerFieldRef("terms", el)}
             />
             I agree to the terms and conditions
@@ -438,48 +442,66 @@ function SimpleForm() {
         <FormField
           fieldName={"date"}
           label={"Date"}
-          showError={showError}
+          showError={fieldHasError("date")}
           error={errors.date}
         >
-          <input
-            type="date"
-            id="date"
-            name="date"
-            required
-            value={formData.date}
-            onChange={handleChange}
-            aria-describedby={showError("date") ? "date-error" : undefined}
-            aria-invalid={showError("date") ? "true" : "false"}
-            aria-required="true"
-            ref={(el) => registerFieldRef("date", el)}
-          />
+          <div className={styles["form__input-icon-wrapper"]}>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              required
+              value={formData.date}
+              onChange={handleChange}
+              aria-describedby={
+                fieldHasError("date") ? "date-error" : undefined
+              }
+              aria-invalid={fieldHasError("date") ? "true" : "false"}
+              aria-required="true"
+              ref={(el) => registerFieldRef("date", el)}
+            />
+            <Calendar
+              className={styles["form__input-icon"]}
+              aria-hidden="true"
+              focusable="false"
+            />
+          </div>
         </FormField>
 
         <FormField
           fieldName={"time"}
           label={"Time"}
-          showError={showError}
+          showError={fieldHasError("time")}
           error={errors.time}
         >
-          <input
-            type="time"
-            id="time"
-            name="time"
-            required
-            value={formData.time}
-            onChange={handleChange}
-            aria-describedby={showError("time") ? "time-error" : undefined}
-            aria-invalid={showError("time") ? "true" : "false"}
-            aria-required="true"
-            ref={(el) => registerFieldRef("time", el)}
-          />
+          <div className={styles["form__input-icon-wrapper"]}>
+            <input
+              type="time"
+              id="time"
+              name="time"
+              required
+              value={formData.time}
+              onChange={handleChange}
+              aria-describedby={
+                fieldHasError("time") ? "time-error" : undefined
+              }
+              aria-invalid={fieldHasError("time") ? "true" : "false"}
+              aria-required="true"
+              ref={(el) => registerFieldRef("time", el)}
+            />
+            <Clock
+              className={styles["form__input-icon"]}
+              aria-hidden="true"
+              focusable="false"
+            />
+          </div>
         </FormField>
 
         {/* Toggle v1 */}
         <FormField
           fieldName={"earlyContact"}
           label={"Contact for earlier availability"}
-          showError={showError}
+          showError={fieldHasError("earlyContact")}
           error={errors.earlyContact}
         >
           <div className={styles["form__switch-wrapper"]}>

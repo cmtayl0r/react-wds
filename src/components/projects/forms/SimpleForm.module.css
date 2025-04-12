@@ -33,6 +33,20 @@ FORM STRUCTURE
   border-left: 5px solid var(--form-error-color);
 }
 
+.password-check--valid {
+  color: green;
+  font-weight: 600;
+}
+
+.password-check--invalid {
+  color: red;
+  font-weight: 400;
+}
+
+.help-text>* {
+  font-size: var(--fs-sm);
+}
+
 .form__field--error input,
 .form__field--error textarea,
 .form__field--error select {
@@ -57,6 +71,7 @@ FORM STRUCTURE
 
 }
 
+.form__field-group,
 .form__radio-group,
 .form__checkbox-group {
   display: flex;
@@ -112,32 +127,45 @@ select:invalid {
 DATE AND TIME INPUT
 --------------------------------------------------------------------------------
 */
-input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-calendar-picker-indicator,
-input[type="datetime"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-}
 
-/* input[type="date"]::-webkit-calendar-picker-indicator,
-input[type="time"]::-webkit-calendar-picker-indicator,
-input[type="datetime"]::-webkit-calendar-picker-indicator {
+/* Override default browser icon styles for date and time inputs */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
   opacity: 0;
+  cursor: pointer;
   position: absolute;
   right: 0;
-}
-
-.inputWrapper {
-  position: relative;
   width: 100%;
+  height: 100%;
 }
 
-.inputWrapper .customInputIcon {
+input[type="date"],
+input[type="time"] {
+  position: relative;
+  padding-right: 2.5rem;
+  /* leave space for your custom icon */
+}
+
+.form__input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form__input-icon-wrapper input {
+  width: 100%;
+  padding-right: 2.5rem;
+  /* space for icon */
+}
+
+.form__input-icon {
   position: absolute;
   right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
   pointer-events: none;
-} */
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-white);
+}
 
 /* 
 --------------------------------------------------------------------------------
