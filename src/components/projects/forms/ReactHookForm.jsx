@@ -30,6 +30,7 @@ function ReactHookForm() {
       earlyContact: false,
       subscription: "",
       terms: false,
+      fileUpload: undefined,
     },
     mode: "onTouched", // Delays validation until field is touched (first blur)
     reValidateMode: "onChange", // Re-validate field on every change after initial blur
@@ -428,6 +429,40 @@ function ReactHookForm() {
             />
           )}
         </div>
+      </fieldset>
+
+      {/* FIELDSET */}
+
+      <fieldset className={styles.stack}>
+        <legend>Misc</legend>
+
+        {/* FILE UPLOAD */}
+
+        <FormFieldRHF
+          fieldName="fileUpload"
+          label="File Upload"
+          error={errors?.fileUpload?.message}
+        >
+          {/* 
+            We use Controller because file inputs can’t be controlled directly with register 
+            and need custom onChange handling to avoid premature validation. 
+          */}
+          <Controller
+            control={control}
+            name="fileUpload"
+            rules={{
+              validate: (files) =>
+                files?.length > 0 || "You must upload a file",
+            }}
+            render={({ field }) => (
+              <input
+                type="file"
+                id="fileUpload"
+                onChange={(e) => field.onChange(e.target.files)}
+              />
+            )}
+          />
+        </FormFieldRHF>
       </fieldset>
 
       <button type="submit">{isSubmitting ? "Submitting..." : "Submit"}</button>
