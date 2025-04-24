@@ -1,11 +1,10 @@
-import InlineErrorMessage from "./InlineErrorMessage";
-import styles from "./SimpleForm.module.css";
+import InlineErrorMessage from "./form-fields/InlineErrorMessage";
+import styles from "./FormStyles.module.css";
 
 function FormField({
   fieldName,
   label,
   children,
-  showError,
   error,
   hideLabel = false,
   className = "", // Injecting extra classes
@@ -17,7 +16,7 @@ function FormField({
     <div
       className={`
         ${styles["form__field"]} 
-        ${showError ? styles["form__field--error"] : ""}
+        ${error ? styles["form__field--error"] : ""}
         ${className}
       `}
     >
@@ -31,9 +30,7 @@ function FormField({
         {labelText}
       </label>
       {children}
-      {showError && error && (
-        <InlineErrorMessage idName={fieldName} message={error} />
-      )}
+      {error && <InlineErrorMessage idName={fieldName} message={error} />}
     </div>
   );
 }

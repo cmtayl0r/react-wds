@@ -1,11 +1,11 @@
 import { forwardRef } from "react";
-import styles from "./SimpleForm.module.css";
+import styles from "../FormStyles.module.css";
 
 const ErrorSummary = forwardRef(({ errors, fieldRefs }, ref) => {
   // Only render if there are errors
   if (Object.keys(errors).length === 0) return null;
 
-  // Function to scroll and focus the first error field
+  // FUNCTION: Focus the field with the given ID
   const focusField = (e, fieldId) => {
     e.preventDefault();
     // Get the DOM element for the field and focus it
@@ -28,10 +28,9 @@ const ErrorSummary = forwardRef(({ errors, fieldRefs }, ref) => {
       className={styles["form__error-summary"]}
       role="alert"
       aria-labelledby="error-summary-title"
-      tabIndex={-1}
     >
       <p id="error-summary-title">
-        <strong>Please fix the following:</strong>
+        <strong>Please fix the following errors:</strong>
       </p>
       <ul>
         {Object.entries(errors).map(([field, message]) => (

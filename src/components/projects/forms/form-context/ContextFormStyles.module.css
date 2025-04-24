@@ -1,0 +1,277 @@
+.form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Field styles */
+.fieldWrapper {
+  margin-bottom: 1.5rem;
+}
+
+.fieldWrapperError {
+  border-left: 3px solid #d32f2f;
+  padding-left: 1rem;
+  margin-left: -1rem;
+}
+
+.fieldLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.fieldContent {
+  position: relative;
+}
+
+.requiredMark {
+  color: #d32f2f;
+  margin-left: 0.25rem;
+}
+
+/* Input styles */
+.textInput,
+.selectInput,
+.textareaInput {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+
+  .textInput,
+  .selectInput,
+  .textareaInput {
+    min-height: 48px;
+    font-size: 16px;
+    /* Prevents iOS zoom */
+  }
+}
+
+/* .textInput:focus,
+.selectInput:focus,
+.textareaInput:focus {
+  outline: none;
+  border-color: #2684ff;
+  box-shadow: 0 0 0 2px rgba(38, 132, 255, 0.2);
+} */
+
+.fieldWrapperError .textInput,
+.fieldWrapperError .selectInput,
+.fieldWrapperError .textareaInput {
+  border-color: #d32f2f;
+}
+
+/* Checkbox styles */
+.checkboxWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.checkboxInput {
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .checkboxInput {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.checkboxLabel {
+  font-weight: normal;
+}
+
+/* Radio group styles */
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radioOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .radioInput {
+    width: 20px;
+    height: 20px;
+  }
+
+  .radioOption {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Toggle switch styles */
+.toggleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 32px;
+}
+
+.toggleInput {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: 0.2s;
+}
+
+.toggleSlider:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 24px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.toggleInput:checked+.toggleSlider {
+  background-color: #2684ff;
+}
+
+/* .toggleInput:focus+.toggleSlider {
+  box-shadow: 0 0 1px #2684ff;
+} */
+
+.toggleInput:checked+.toggleSlider:before {
+  transform: translateX(20px);
+}
+
+/* Show focus ring on switch handle when input is focused */
+.toggleInput:focus+.toggleSlider,
+.toggleInput:focus-visible+.toggleSlider {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Help text */
+.helpText {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* Error message */
+.errorMessage {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Error summary */
+.errorSummary {
+  border: 3px solid #d32f2f;
+  background-color: #fdeeee;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.errorSummaryTitle {
+  color: #d32f2f;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+.errorSummaryList {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.errorSummaryList a {
+  color: #d32f2f;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.errorSummaryList a:hover,
+.errorSummaryList a:focus {
+  text-decoration: none;
+}
+
+/* Success message */
+.successMessage {
+  background-color: #edf7ed;
+  color: #1e4620;
+  border: 1px solid #c6e6c6;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.resetButton {
+  display: block;
+  margin: 1rem auto 0;
+  padding: 0.5rem 1rem;
+  background-color: #1e4620;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Submit button */
+.submitButton {
+  background-color: #2684ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.submitButton:hover {
+  background-color: #1a69d2;
+}
+
+/* .submitButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(38, 132, 255, 0.3);
+} */
+
+@media (max-width: 768px) {
+  .submitButton {
+    width: 100%;
+    min-height: 48px;
+  }
+}

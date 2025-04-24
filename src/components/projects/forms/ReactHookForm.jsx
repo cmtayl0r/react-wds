@@ -1,10 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
 import { useRef } from "react";
-import styles from "./SimpleForm.module.css";
-import ErrorSummary from "./ErrorSummary";
+import styles from "./FormStyles.module.css";
+import ErrorSummary from "./form-fields/ErrorSummary";
 import FormFieldRHF from "./FormFieldRHF";
-import { Calendar, Clock, Clock10Icon } from "lucide-react";
-import InlineErrorMessage from "./InlineErrorMessage";
+import { Calendar, Clock } from "lucide-react";
+import InlineErrorMessage from "./form-fields/InlineErrorMessage";
 
 function ReactHookForm() {
   const {

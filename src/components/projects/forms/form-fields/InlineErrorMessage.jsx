@@ -1,12 +1,17 @@
 import { TriangleAlert } from "lucide-react";
-import styles from "./SimpleForm.module.css";
+import styles from "../FormStyles.module.css";
 function InlineErrorMessage({ idName, message }) {
   if (!message) return null;
 
   return (
-    <div className={styles["form__error"]} aria-live="polite">
+    <div
+      id={`${idName}-error`}
+      className={styles["form__error"]}
+      role="alert"
+      aria-live="assertive"
+    >
       <TriangleAlert aria-hidden="true" />
-      <span id={`${idName}-error`}>{message}</span>
+      <span>{message}</span>
     </div>
   );
 }

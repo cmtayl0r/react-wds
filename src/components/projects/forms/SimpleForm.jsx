@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import styles from "./SimpleForm.module.css";
-import InlineErrorMessage from "./InlineErrorMessage";
-import ErrorSummary from "./ErrorSummary";
+import styles from "./FormStyles.module.css";
+import InlineErrorMessage from "./form-fields/InlineErrorMessage";
+import ErrorSummary from "./form-fields/ErrorSummary";
 import { fieldIsEmpty } from "../../../utils/validation";
 import FormField from "./FormField";
 import FormFieldGroup from "./FormFieldGroup";
@@ -147,11 +147,11 @@ function SimpleForm() {
     // Find the first error field
     const firstErrorField = Object.keys(errors)[0];
     // .current is used to access the value of the ref
-    const element = fieldRefs.current[firstErrorField];
-    if (element) {
+    const ref = fieldRefs.current[firstErrorField];
+    if (ref?.focus) {
       // If we have a ref for this field, scroll and focus it
-      element.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => element.focus(), 100);
+      ref.scrollIntoView({ behavior: "smooth", block: "center" });
+      requestAnimationFrame(() => ref.focus());
     }
   };
 
@@ -201,7 +201,7 @@ function SimpleForm() {
       noValidate // Disable browser validation because we're doing it ourselves
       onSubmit={handleSubmit}
     >
-      <h3>Form</h3>
+      <h3>Basic Form</h3>
 
       {/* Error Summary */}
       <ErrorSummary

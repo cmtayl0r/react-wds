@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
-import InlineErrorMessage from "./InlineErrorMessage";
-import styles from "./SimpleForm.module.css";
+import InlineErrorMessage from "./form-fields/InlineErrorMessage";
+import styles from "./FormStyles.module.css";
 
 /**
  * A reusable wrapper for grouped inputs (checkboxes, radios).

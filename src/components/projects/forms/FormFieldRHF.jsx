@@ -1,6 +1,6 @@
-import InlineErrorMessage from "./InlineErrorMessage";
-import InlineValidMessage from "./InlineValidMessage";
-import styles from "./SimpleForm.module.css";
+import InlineErrorMessage from "./form-fields/InlineErrorMessage";
+import InlineValidMessage from "./form-fields/InlineValidMessage";
+import styles from "./FormStyles.module.css";
 
 function FormFieldRHF({
   fieldName,

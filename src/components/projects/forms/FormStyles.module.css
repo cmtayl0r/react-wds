@@ -2,6 +2,7 @@
   --form-error-color: hsl(0, 100%, 70%);
   --form-error-bg: hsl(0, 100%, 95%);
   --form-valid-color: hsl(143, 100%, 32%);
+  --form-valid-bg: hsl(143, 100%, 95%);
 }
 
 /* 
@@ -76,7 +77,14 @@ FORM STRUCTURE
   & li {
     list-style: none;
   }
+}
 
+.form__success {
+  color: var(--form-valid-color);
+  background: var(--form-valid-bg);
+  border-radius: 0.25em;
+  padding: 1rem;
+  border: 3px solid var(--form-valid-color);
 }
 
 .form__field-group,
@@ -251,8 +259,11 @@ TOGGLES
   transform: translateX(calc(var(--switch-width) - var(--switch-thumb-size) - 2 * var(--switch-padding)));
 }
 
-input:focus-visible+.form__switch-handle {
+/* Show focus ring on switch handle when input is focused */
+.form__switch input[type="checkbox"]:focus+.form__switch-handle,
+.form__switch input[type="checkbox"]:focus-visible+.form__switch-handle {
   outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 /* 

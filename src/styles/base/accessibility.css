@@ -7,12 +7,29 @@ ACCESSIBILITY
 /* Focus ring for keyboard navigation */
 *:focus-visible {
   outline: 3px solid var(--focus-ring);
-  outline-offset: 0;
+  outline-offset: 3px;
 }
 
 /* Remove focus outline for mouse users */
 *:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* 
+  Fix to display focus ring on checkboxes and radio buttons when using focus() in js
+  because, element.focus(); // programmatic focus → ❌ no :focus-visible
+*/
+input[type="checkbox"]:focus,
+input[type="radio"]:focus,
+input[role="switch"]:focus {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Ensure error links always get focus ring */
+.force-focus-ring {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 /* Screen reader-only text, visually hidden but still accessible */
