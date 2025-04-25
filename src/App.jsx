@@ -7,12 +7,14 @@ import SimpleForm from "./components/projects/forms/SimpleForm";
 import ReactHookForm from "./components/projects/forms/ReactHookForm";
 import SimpleFormTwo from "./components/projects/forms/SimpleFormTwo";
 import DemoContextForm from "./components/projects/forms/form-context/DemoContextForm";
+import UseReducerDemo from "./components/projects/adv-state/UseReducerDemo";
 
 function App() {
   return (
     <>
       <h1>React WDS</h1>
-      <DemoContextForm />
+      <UseReducerDemo />
+      {/* <DemoContextForm /> */}
       {/* <ReactHookForm /> */}
       {/* <SimpleForm /> */}
       {/* <LocalStorage /> */}
