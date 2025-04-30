@@ -8,12 +8,20 @@ import ReactHookForm from "./components/projects/forms/ReactHookForm";
 import SimpleFormTwo from "./components/projects/forms/SimpleFormTwo";
 import DemoContextForm from "./components/projects/forms/form-context/DemoContextForm";
 import UseReducerDemo from "./components/projects/adv-state/UseReducerDemo";
+import DemoToast from "./components/projects/toast/DemoToast";
+import { ToastProvider } from "./components/projects/toast/ToastContext";
+import Toast from "./components/projects/toast/Toast";
 
 function App() {
   return (
     <>
       <h1>React WDS</h1>
-      <UseReducerDemo />
+      <ToastProvider>
+        <Toast />
+        <DemoToast />
+      </ToastProvider>
+
+      {/* <UseReducerDemo /> */}
       {/* <DemoContextForm /> */}
       {/* <ReactHookForm /> */}
       {/* <SimpleForm /> */}
