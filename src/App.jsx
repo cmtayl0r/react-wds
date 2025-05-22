@@ -16,10 +16,10 @@ function App() {
   return (
     <>
       <h1>React WDS</h1>
-      <ToastProvider>
+      {/* <ToastProvider>
         <Toast />
         <DemoToast />
-      </ToastProvider>
+      </ToastProvider> */}
 
       {/* <UseReducerDemo /> */}
       {/* <DemoContextForm /> */}
@@ -28,7 +28,7 @@ function App() {
       {/* <LocalStorage /> */}
       {/* <ChangeArray /> */}
       {/* <FetchData /> */}
-      {/* <TodoList /> */}
+      <TodoList />
       {/* <List /> */}
       {/* <SimpleFormTwo /> */}
     </>
