@@ -11,11 +11,30 @@ import UseReducerDemo from "./components/projects/adv-state/UseReducerDemo";
 import DemoToast from "./components/projects/toast/DemoToast";
 import { ToastProvider } from "./components/projects/toast/ToastContext";
 import Toast from "./components/projects/toast/Toast";
+import DatePicker from "./components/projects/date-picker/DatePicker";
 
 function App() {
   return (
     <>
       <h1>React WDS</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "right",
+        }}
+      >
+        <DatePicker>
+          <DatePicker.Trigger>
+            <button>Select Date</button>
+          </DatePicker.Trigger>
+          <DatePicker.Popover>
+            <DatePicker.Header monthLabel="May 2025" />
+            <DatePicker.Weekdays />
+            <DatePicker.Grid />
+          </DatePicker.Popover>
+        </DatePicker>
+      </div>
+
       {/* <ToastProvider>
         <Toast />
         <DemoToast />
@@ -28,7 +47,7 @@ function App() {
       {/* <LocalStorage /> */}
       {/* <ChangeArray /> */}
       {/* <FetchData /> */}
-      <TodoList />
+      {/* <TodoList /> */}
       {/* <List /> */}
       {/* <SimpleFormTwo /> */}
     </>
