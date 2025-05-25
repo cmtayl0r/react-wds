@@ -46,7 +46,8 @@
   z-index: 200;
 }
 
-.date-picker__header {
+.date-picker__header,
+.date-picker__weekdays {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
@@ -89,4 +90,13 @@
 
 .date:hover {
   background-color: var(--color-gray-dark);
+}
+
+.date-cell--today {
+  background-color: blue;
+}
+
+.date-cell--other-month {
+  border: none;
+  color: var(--color-gray);
 }

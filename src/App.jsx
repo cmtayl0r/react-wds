@@ -17,6 +17,7 @@ function App() {
   return (
     <>
       <h1>React WDS</h1>
+
       <div
         style={{
           display: "flex",
@@ -28,7 +29,7 @@ function App() {
             <button>Select Date</button>
           </DatePicker.Trigger>
           <DatePicker.Popover>
-            <DatePicker.Header monthLabel="May 2025" />
+            <DatePicker.Header />
             <DatePicker.Weekdays />
             <DatePicker.Grid />
           </DatePicker.Popover>
