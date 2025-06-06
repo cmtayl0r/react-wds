@@ -15,8 +15,10 @@ import DatePicker from "./components/projects/date-picker/DatePicker";
 
 function App() {
   return (
-    <>
-      <h1>React WDS</h1>
+    <main className="app-container">
+      <header className="app-header">
+        <h3>React Learning</h3>
+      </header>
 
       <div
         style={{
@@ -51,7 +53,7 @@ function App() {
       {/* <TodoList /> */}
       {/* <List /> */}
       {/* <SimpleFormTwo /> */}
-    </>
+    </main>
   );
 }
 
