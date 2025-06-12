@@ -1,0 +1,55 @@
+/* styles.css */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.image-item {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--color-gray-dark);
+}
+
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+
+/* While image loads, show skeleton */
+.skeleton {
+  /* position: absolute; */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      #2a2a2a 0%,
+      #3a3a3a 50%,
+      #2a2a2a 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite ease-in-out;
+  z-index: 1;
+}
+
+/* Animate the shimmer */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.image-item img.hidden {
+  opacity: 0;
+}
+
+.image-item img.visible {
+  opacity: 1;
+  z-index: 2;
+}

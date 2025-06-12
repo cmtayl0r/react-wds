@@ -4,3 +4,58 @@
 @import './abstracts/typography.css';
 @import './abstracts/forms.css';
 @import './base/accessibility.css';
+
+
+:root {
+  --c-fg: oklch(0 0.1 0.1);
+  --c-color-on-fg: oklch(1 0 0);
+  --state-hover-opacity: 0.08;
+  --state-focus-opacity: 0.12;
+  --state-pressed-opacity: 0.12;
+}
+
+.test-btn {
+  background-color: var(--c-fg);
+  color: var(--c-color-on-fg);
+
+  &:hover {
+    background: oklch(from var(--c-fg) calc(1 * 0.1) c h);
+  }
+
+  &:active {
+    background: oklch(from var(--c-fg) calc(1 * 0.2) c h);
+  }
+
+  &:focus-visible {
+    background: oklch(from var(--c-fg) calc(1 * 0.2) c h);
+  }
+}
+
+
+.test-btn2 {
+  background-color: var(--c-fg);
+  color: var(--c-color-on-fg);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--c-color-on-fg);
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+  }
+
+  &:hover::after {
+    opacity: var(--state-hover-opacity);
+  }
+
+  &:active::after {
+    opacity: var(--state-pressed-opacity);
+  }
+
+  & :focus-visible::after {
+    opacity: var(--state-focus-opacity);
+  }
+}

@@ -12,6 +12,7 @@ import DemoToast from "./components/projects/toast/DemoToast";
 import { ToastProvider } from "./components/projects/toast/ToastContext";
 import Toast from "./components/projects/toast/Toast";
 import DatePicker from "./components/projects/date-picker/DatePicker";
+import InfiniteScroll from "./components/projects/infinite-scroll/InfiniteScroll";
 
 function App() {
   return (
@@ -19,11 +20,12 @@ function App() {
       <header className="app-header">
         <h3>React Learning</h3>
       </header>
-
-      <div
+      <InfiniteScroll />
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "right",
+          padding: "1rem",
         }}
       >
         <DatePicker>
@@ -36,7 +38,7 @@ function App() {
             <DatePicker.Grid />
           </DatePicker.Popover>
         </DatePicker>
-      </div>
+      </div> */}
 
       {/* <ToastProvider>
         <Toast />
