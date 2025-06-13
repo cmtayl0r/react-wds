@@ -13,6 +13,7 @@ import { ToastProvider } from "./components/projects/toast/ToastContext";
 import Toast from "./components/projects/toast/Toast";
 import DatePicker from "./components/projects/date-picker/DatePicker";
 import InfiniteScroll from "./components/projects/infinite-scroll/InfiniteScroll";
+import ParentList from "./components/projects/controlled-modal/ParentList";
 
 function App() {
   return (
@@ -20,31 +21,14 @@ function App() {
       <header className="app-header">
         <h3>React Learning</h3>
       </header>
-      <InfiniteScroll />
-      {/* <div
-        style={{
-          display: "flex",
-          justifyContent: "right",
-          padding: "1rem",
-        }}
-      >
-        <DatePicker>
-          <DatePicker.Trigger>
-            <button>Select Date</button>
-          </DatePicker.Trigger>
-          <DatePicker.Popover>
-            <DatePicker.Header />
-            <DatePicker.Weekdays />
-            <DatePicker.Grid />
-          </DatePicker.Popover>
-        </DatePicker>
-      </div> */}
 
+      <ParentList />
+
+      {/* <InfiniteScroll /> */}
       {/* <ToastProvider>
         <Toast />
         <DemoToast />
       </ToastProvider> */}
-
       {/* <UseReducerDemo /> */}
       {/* <DemoContextForm /> */}
       {/* <ReactHookForm /> */}

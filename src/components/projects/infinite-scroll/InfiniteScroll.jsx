@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./InfiniteScroll.module.css";
 import ImageWithLoader from "./ImageWithLoader";
 import { useInfiniteScroll } from "./useInfiniteScroll";
@@ -12,6 +12,7 @@ const InfiniteScroll = () => {
   const [loading, setLoading] = useState(false);
 
   // 🔁 Fetch next page of images
+  // This is a callback because it will be used in the custom hook
   const fetchImages = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
@@ -40,6 +41,7 @@ const InfiniteScroll = () => {
 
   // 🔍 Observe the last image to trigger load
   // Use the custom hook for infinite scroll
+  // Send the fetchImages callback, hasMore state, and loading state
   // It is assigned to the last image in the list
   const lastImageRef = useInfiniteScroll(fetchImages, hasMore, loading);
 
