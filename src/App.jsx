@@ -14,6 +14,7 @@ import Toast from "./components/projects/toast/Toast";
 import DatePicker from "./components/projects/date-picker/DatePicker";
 import InfiniteScroll from "./components/projects/infinite-scroll/InfiniteScroll";
 import ParentList from "./components/projects/controlled-modal/ParentList";
+import RecursiveComponents from "./components/projects/recursive/RecursiveComponents";
 
 function App() {
   return (
@@ -22,7 +23,9 @@ function App() {
         <h3>React Learning</h3>
       </header>
 
-      <ParentList />
+      <RecursiveComponents />
+
+      {/* <ParentList /> */}
 
       {/* <InfiniteScroll /> */}
       {/* <ToastProvider>
