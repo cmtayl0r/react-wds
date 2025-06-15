@@ -16,6 +16,7 @@ import InfiniteScroll from "./components/projects/infinite-scroll/InfiniteScroll
 import ParentList from "./components/projects/controlled-modal/ParentList";
 import RecursiveComponents from "./components/projects/recursive/RecursiveComponents";
 import DeferredResults from "./components/projects/deferred-value/DeferredResults";
+import UseTransitionHook from "./components/projects/use-transition/UseTransitionHook";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
       </header>
       {/* 👇 projects */}
 
-      <DeferredResults />
+      <UseTransitionHook />
+      {/* <DeferredResults /> */}
       {/* <RecursiveComponents /> */}
       {/* <ParentList /> */}
       {/* <InfiniteScroll /> */}
