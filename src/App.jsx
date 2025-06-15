@@ -22,11 +22,10 @@ function App() {
       <header className="app-header">
         <h3>React Learning</h3>
       </header>
+      {/* 👇 projects */}
 
       <RecursiveComponents />
-
       {/* <ParentList /> */}
-
       {/* <InfiniteScroll /> */}
       {/* <ToastProvider>
         <Toast />
