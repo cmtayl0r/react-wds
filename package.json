@@ -10,11 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.80.7",
     "framer-motion": "^12.9.2",
     "lucide-react": "^0.485.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.55.0"
+    "react-hook-form": "^7.58.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

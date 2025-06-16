@@ -15,8 +15,12 @@ import DatePicker from "./components/projects/date-picker/DatePicker";
 import InfiniteScroll from "./components/projects/infinite-scroll/InfiniteScroll";
 import ParentList from "./components/projects/controlled-modal/ParentList";
 import RecursiveComponents from "./components/projects/recursive/RecursiveComponents";
-import DeferredResults from "./components/projects/deferred-value/DeferredResults";
-import UseTransitionHook from "./components/projects/use-transition/UseTransitionHook";
+// import DeferredResults from "./components/projects/deferred-value/DeferredResults";
+// import UseTransitionHook from "./components/projects/use-transition/UseTransitionHook";
+import ApiClientVanilla from "./components/projects/api-client-vanilla/ApiClientVanilla";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
+import ApiClientRQ from "./components/projects/api-client-rq/ApiClientRQ";
 
 function App() {
   return (
@@ -25,8 +29,12 @@ function App() {
         <h3>React Learning</h3>
       </header>
       {/* 👇 projects */}
+      <QueryClientProvider client={queryClient}>
+        <ApiClientRQ />
+      </QueryClientProvider>
 
-      <UseTransitionHook />
+      {/* <ApiClientVanilla /> */}
+      {/* <UseTransitionHook /> */}
       {/* <DeferredResults /> */}
       {/* <RecursiveComponents /> */}
       {/* <ParentList /> */}
