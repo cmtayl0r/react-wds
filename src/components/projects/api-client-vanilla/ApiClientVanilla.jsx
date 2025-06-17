@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useResource } from "./useResource";
+import LazyLoader from "./LazyLoader";
 
 const ApiClientVanilla = () => {
   const {
@@ -41,7 +42,8 @@ const ApiClientVanilla = () => {
       {/*  */}
       <h5>1️⃣ Fetch on mount</h5>
       <div>
-        {usersLoading && <div className="loading">Loading users...</div>}
+        <LazyLoader show={usersLoading} delay={500} />
+        {/* {usersLoading && <div className="loading">Loading users...</div>} */}
         {usersError && <div className="error">Error: {usersError}</div>}
         {users.length > 0 && (
           <ul>

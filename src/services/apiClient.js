@@ -1,7 +1,8 @@
 // api.js
 
 // Change to your API endpoint
-const API_BASE = "https://gorest.co.in/public/v2";
+// const API_BASE = "https://gorest.co.in/public/v2";
+const API_BASE = "https://pokeapi.co/api/v2";
 
 // Helper to build query string from params object
 function buildQuery(params = {}) {

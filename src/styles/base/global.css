@@ -5,7 +5,7 @@
   font-weight: var(--fw-regular);
   color: var(--color-white);
   background-color: var(--color-black);
-  /* 
+  /*
     When clicking an anchor link (#section)
     the browser scrolls too far up
     Adding scroll-padding-top prevents content from being cut off.
@@ -16,8 +16,8 @@
 
 body {
   min-height: 100vh;
-  /* 
-    To sort horizontal scroll bar issue 
+  /*
+    To sort horizontal scroll bar issue
     when using full-width trick on image and callout
     vw unit counts under the vertical scrollbar
   */
@@ -44,4 +44,11 @@ body {
   width: 100%;
   padding: 1rem;
   border-bottom: 2px solid var(--color-gray-light);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useResourceQuery } from "./useResourceQuery";
 import { useForm } from "react-hook-form";
 import useDebounce from "../../../hooks/useDebounce";
@@ -67,14 +66,7 @@ const ApiClientRQ = () => {
   const totalResults = users?.length || 0;
 
   return (
-    <div
-      style={{
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-      }}
-    >
+    <div className="container">
       <h4>API Client w/ React Query</h4>
 
       <form onSubmit={handleSubmit(onSubmit)}>

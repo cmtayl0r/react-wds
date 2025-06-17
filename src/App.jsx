@@ -21,6 +21,7 @@ import ApiClientVanilla from "./components/projects/api-client-vanilla/ApiClient
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const queryClient = new QueryClient();
 import ApiClientRQ from "./components/projects/api-client-rq/ApiClientRQ";
+import BasicRQ from "./components/projects/api-client-rq/BasicRQ";
 
 function App() {
   return (
@@ -29,8 +30,10 @@ function App() {
         <h3>React Learning</h3>
       </header>
       {/* 👇 projects */}
+
       <QueryClientProvider client={queryClient}>
-        <ApiClientRQ />
+        <BasicRQ />
+        {/* <ApiClientRQ /> */}
       </QueryClientProvider>
 
       {/* <ApiClientVanilla /> */}
