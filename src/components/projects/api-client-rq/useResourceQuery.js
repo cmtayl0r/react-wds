@@ -46,7 +46,10 @@ export const useResourceQuery = (resource, params = {}, autoFetch = true) => {
     mutationFn: (itemData) => api.create(resource, itemData),
     onSuccess: (newItem) => {
       // Optimistic update: immediately add new item to cache
-      queryClient.setQueryData(queryKey, (old = []) => [newItem, ...old]);
+      queryClient.setQueryData(queryKey, (old = []) => [
+        { ...newItem, id: "temp-" + Date.now() },
+        ...old,
+      ]);
     },
     onError: () => {
       // Refetch on error to get correct state
